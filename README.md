@@ -45,7 +45,7 @@ Description: Posts user's objects of prices to the day specified
 
 Sample Output:
 ```
-{}
+{'price post successful.'}
 ```
 
 Call: GET /std
@@ -54,7 +54,7 @@ Description: Gets the standard deviation of MSFT end-of-day prices.
 
 Sample Output:
 ```
-2.51
+{2.51}
 ```
 
 ## Usage
