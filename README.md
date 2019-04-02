@@ -44,7 +44,18 @@ Sample Output:
 
 Curl: 
 
+```curl -v http://localhost:8082/std```
+
 Python:
+
+```
+import requests
+
+resp = requests.get('http://localhost:8082/std')
+if resp.status_code != 200:
+    raise ApiError('GET /std/ {}'.format(resp.status_code))
+print('Standard deviation: {}'.format(resp.json()))
+```
 
 ## Pricing
 
