@@ -8,6 +8,8 @@ port = 6379
 
 rd = redis.StrictRedis(host=host, port=port, db=0)
 queue = HotQueue("myqueue", host=host, port=port, db=0)
+get_all()
+
 
 def generate_jid():
     return str(uuid.uuid4())
@@ -20,7 +22,8 @@ def get_job_by_id(jid):
 
 def get_all():
     for key in r.scan_iter("user:*"):
-        r.hgetall(key)
+        print(r.hgetall(key))
+
 
 def update_job(jid, new_status='complete'):
     job = get_job_by_id(jid)
@@ -40,9 +43,10 @@ def instantiate_job(jid, command, status):
              'start_time': datetime.datetime.now(),
              'command': command }
 
+@q.worker
 def add_new_job(command, status='incomplete'):
     jid = generate_jid()
-    job_dict = instantiate_job(jid, status)
+    job_dict = instantiate_job(jid, command, status)
     key = generate_job_key(jid)
     queue.put(key)
     rd.hmset(key, job_dict)
