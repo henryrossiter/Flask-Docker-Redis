@@ -24,7 +24,6 @@ def get_all():
     for key in r.scan_iter("user:*"):
         print(r.hgetall(key))
 
-
 def update_job(jid, new_status='complete'):
     job = get_job_by_id(jid)
     job['status'] = new_status
@@ -40,8 +39,8 @@ def work(jid):
 def instantiate_job(jid, command, status):
     return {'id': jid,
             'status': status,
-             'start_time': datetime.datetime.now(),
-             'command': command }
+            'start_time': datetime.datetime.now(),
+            'command': command }
 
 @q.worker
 def add_new_job(command, status='incomplete'):
