@@ -9,6 +9,7 @@ data = json.load(open('MSFT.json', 'r'))
 @app.route('/price', methods = ['GET'])
 def get_all_prices():
     server.add_job('get_price')
+    return jsonify([col['Close'] for col in data])
 
 @app.route('/jobs', methods = ['GET'])
 def jobs():
