@@ -1,4 +1,4 @@
-from Flask import flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort
 from redis import StrictRedis
 import json
 import server
