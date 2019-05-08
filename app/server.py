@@ -1,4 +1,4 @@
-from hotqueue import HotQueue\
+from hotqueue import HotQueue
 import datetime
 import redis
 import uuid
