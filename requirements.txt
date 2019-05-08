@@ -5,3 +5,5 @@ redis
 hotqueue
 datetime
 uuid
+pandas
+matplotlib
