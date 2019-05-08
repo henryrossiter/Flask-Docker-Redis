@@ -6,6 +6,10 @@ import server
 app = Flask(__name__)
 data = json.load(open('MSFT.json', 'r'))
 
+@app.route('/')
+def get_all():
+    return jsonify(data)
+
 @app.route('/price', methods = ['GET'])
 def get_all_prices():
     server.add_job('get_price')
