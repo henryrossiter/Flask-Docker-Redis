@@ -1,7 +1,10 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, jsonify, request
 import json
 
+# The main Flask app
 app = Flask(__name__)
+
+# Data from a json file
 data = json.load(open('MSFT.json', 'r'))
 
 @app.route('/')

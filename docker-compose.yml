@@ -3,7 +3,7 @@ services:
   flask:
     build: .
     ports:
-      - "5001:5001"
+      - "5005:5005"
 
     networks:
       - "redis-net"
