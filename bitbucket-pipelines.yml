@@ -13,4 +13,4 @@ pipelines:
           - docker version
           - docker-compose up -d
           - sleep 5s
-          - curl http://localhost:5001/
+          - curl http://localhost:5005/

@@ -2,8 +2,6 @@ coverage
 flask
 requests
 redis
-json
-server
 hotqueue
 datetime
 uuid
