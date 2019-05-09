@@ -5,16 +5,9 @@ from pandas.io.json import json_normalize
 from hotqueue import HotQueue
 import datetime
 import redis
-import server
-import plots
+#from plots import create_figure
 
-server.say_hi()
 
-host = 'localhost'
-port = 6379
-
-rd = redis.StrictRedis(host=host, port=port, db=0)
-queue = HotQueue("myqueue", host=host, port=port, db=0)
 
 # The main Flask app
 app = Flask(__name__)
@@ -26,14 +19,13 @@ df['Date'] = df['Date'].astype(str)
 
 @app.route('/')
 def get_all():
-    queue.put("hello")
     return df.to_json()
 
-@app.route('/graphs', methods = ['GET'])
-def show_plots():
-    graph_url1 = create_figure(df['Date'], df['Close'])
-    graph_url2 = create_figure(df['Date'], df['Volume'])
-    return render_template("graphs.html", graph1 = graph_url1, graph2 = graph_url2)
+#@app.route('/graphs', methods = ['GET'])
+#def show_plots():
+#    graph_url1 = create_figure(df['Date'], df['Close'])
+#    graph_url2 = create_figure(df['Date'], df['Volume'])
+#    return render_template("graphs.html", graph1 = graph_url1, graph2 = graph_url2)
 
 @app.route('/prices', methods = ['GET'])
 def get_all_prices():
