@@ -6,11 +6,15 @@ Microsoft Stock prices
 
 ## API Spec
 
+Call: GET /graphs
+
+Description: Creates and displays plots of the stock price and the stock volume over time.
+
 Call: GET /price
 
 Description: Gets all of MSFT's end of day prices.
 
-Sample Output: 
+Sample Output:
 ```
 {
     3-31-19: 119.81
@@ -59,7 +63,7 @@ Sample Output:
 
 ## Usage
 
-Curl: 
+Curl:
 
 ```curl -v http://localhost:8082/std```
 
@@ -77,4 +81,3 @@ print('Standard deviation: {}'.format(resp.json()))
 ## Pricing
 
 $5 monthly for unlimited API access.
-
