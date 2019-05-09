@@ -1,5 +1,7 @@
 import pandas
 import matplotlib.pyplot as plt
+import io
+import base64
 
 def create_figure(x, y):
     img = io.BytesIO()

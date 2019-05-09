@@ -5,7 +5,7 @@ from pandas.io.json import json_normalize
 from hotqueue import HotQueue
 import datetime
 import redis
-#from plots import create_figure
+from plots import create_figure
 
 
 
@@ -21,11 +21,11 @@ df['Date'] = df['Date'].astype(str)
 def get_all():
     return df.to_json()
 
-#@app.route('/graphs', methods = ['GET'])
-#def show_plots():
-#    graph_url1 = create_figure(df['Date'], df['Close'])
-#    graph_url2 = create_figure(df['Date'], df['Volume'])
-#    return render_template("graphs.html", graph1 = graph_url1, graph2 = graph_url2)
+@app.route('/graphs', methods = ['GET'])
+def show_plots():
+    graph_url1 = create_figure(df['Date'], df['Close'])
+    graph_url2 = create_figure(df['Date'], df['Volume'])
+    return render_template("graphs.html", graph1 = graph_url1, graph2 = graph_url2)
 
 @app.route('/prices', methods = ['GET'])
 def get_all_prices():
