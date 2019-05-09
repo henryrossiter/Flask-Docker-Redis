@@ -3,7 +3,7 @@ services:
   flask:
     build: .
     ports:
-      - "5005:5005"
+      - 5005:5005
 
     networks:
       - "redis-net"
@@ -12,6 +12,6 @@ services:
     command: [ "redis-server", "--appendonly", "yes" ]
     hostname: redis
     networks:
-      - redis-net
+      - "redis-net"
 networks:
     redis-net:

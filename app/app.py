@@ -6,16 +6,36 @@ from hotqueue import HotQueue
 import datetime
 import redis
 from plots import create_figure
-
+import os
 
 
 # The main Flask app
 app = Flask(__name__)
 
+def get_redis_ip():
+    ip = os.environ.get('REDIS_IP')
+    if ip is None:
+        ip = "127.0.0.1"
+    return ip
+
+try:
+    rd = redis.StrictRedis(host=get_redis_ip(), port=6379, db=0)
+    q = HotQueue("queue", host=get_redis_ip(), port=6379, db=1)
+    print(rd)
+    q.put('hello', 'queue')
+    rd.ping()
+    print('Connected!')
+except Exception as ex:
+    print('Error:', ex)
+    exit('Failed to connect, terminating.')
+
+
 # Data from a json file
 data = json.load(open('MSFT.json', 'r'))
 df = json_normalize(data)
 df['Date'] = df['Date'].astype(str)
+
+
 
 @app.route('/')
 def get_all():
@@ -65,3 +85,8 @@ def set_new_price(day):
 def jobs():
     #result = server.get_all()
     return jsonify(result)
+
+@q.worker
+def say_hi(str):
+    print('-------')
+    print(str)
