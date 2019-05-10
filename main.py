@@ -1,3 +1,5 @@
+from flask import Flask
+
 from app.app import app
 from requests import get, post
 
