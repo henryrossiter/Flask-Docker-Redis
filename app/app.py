@@ -3,21 +3,20 @@ import json
 import pandas
 from pandas.io.json import json_normalize
 from hotqueue import HotQueue
-import datetime
 import redis
-from plots import create_figure
+from app.plots import create_figure
 import os
 
 
 # The main Flask app
 app = Flask(__name__)
 
+
 def get_redis_ip():
     ip = os.environ.get('REDIS_IP')
     if ip is None:
         ip = "127.0.0.1"
     return ip
-
 try:
     rd = redis.StrictRedis(host=get_redis_ip(), port=6379, db=0)
     q = HotQueue("queue", host=get_redis_ip(), port=6379, db=1)
@@ -29,34 +28,53 @@ except Exception as ex:
     print('Error:', ex)
     exit('Failed to connect, terminating.')
 
-
 # Data from a json file
 data = json.load(open('MSFT.json', 'r'))
 df = json_normalize(data)
 df['Date'] = df['Date'].astype(str)
 
 
-
 @app.route('/')
 def get_all():
     return df.to_json()
 
+
 @app.route('/graphs', methods = ['GET'])
 def show_plots():
-    graph_url1 = create_figure(df['Date'], df['Close'])
-    graph_url2 = create_figure(df['Date'], df['Volume'])
+    graph_url1 = create_figure(df['Date'], df['Close'], "MSFT Close Prices", "Price")
+    graph_url2 = create_figure(df['Date'], df['Volume'], "MSFT Volumes", "Volume")
     return render_template("graphs.html", graph1 = graph_url1, graph2 = graph_url2)
 
-@app.route('/prices', methods = ['GET'])
+@app.route('/prices', methods=['GET'])
 def get_all_prices():
-    #server.add_job('get_price')
     return df['Close'].to_json()
 
-@app.route('/price/<day>', methods = ['GET'])
+
+@app.route('/price/<day>', methods=['GET', 'POST'])
 def get_price(day):
     #todo - input validation
-    day_df = df[df['Date'] == day]
-    return day_df['Close'].to_json()
+    if request.method == 'GET':
+        """return the information for <user_id>"""
+        day_df = df[df['Date'] == day]
+        return day_df['Close'].to_json()
+
+    if request.method == 'POST':
+        """modify/update the information for <user_id>"""
+        data = request.form  # multidict containing POST data
+        new_price = data.get('price')
+        df.append({
+            "Date": day,
+            "Open": "",
+            "High": "",
+            "Low": "",
+            "Close": new_price,
+            "Adj Close": "",
+            "Volume": ""
+          })
+
+
+
+
 
 @app.route('/average/<date>', methods = ['GET'])
 def get_moving_avg(date):
@@ -75,11 +93,6 @@ def get_moving_avg(date):
 def get_std():
     price_df = df['Close']
     return price_df.std()
-
-@app.route('/price/<day>', methods = ['POST'])
-def set_new_price(day):
-    #todo - input validation
-    return None
 
 @app.route('/jobs', methods = ['GET'])
 def jobs():
